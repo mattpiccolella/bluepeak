@@ -3,6 +3,7 @@ from config import Config
 from extensions import db
 from routes import main
 from routes.api import api
+from flask_cors import CORS
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -12,6 +13,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(main)
     app.register_blueprint(api, url_prefix='/api')
+
+
+    # Enable CORS for running on different ports
+    CORS(app)
 
     return app
 
