@@ -4,7 +4,6 @@ import useLocalStorage from '../hooks/useLocalStorage';
 export const TodoContext = createContext();
 
 const todoReducer = (state, action) => {
-    console.log("REDUCER called with action")
   switch (action.type) {
     case 'ADD_TODO':
       return [...state, { id: Date.now(), text: action.payload, completed: false }];
@@ -25,10 +24,6 @@ const todoReducer = (state, action) => {
 
 export const TodoProvider = ({ children }) => {
   const [todos, dispatch] = useLocalStorage('todos', todoReducer, []);
-
-    console.log("HERE")
-    console.log(todos)
-    console.log(dispatch)
   return (
     <TodoContext.Provider value={{ todos, dispatch }}>
       {children}

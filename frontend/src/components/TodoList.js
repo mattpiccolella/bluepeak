@@ -5,7 +5,6 @@ import { TodoContext } from '../contexts/TodoContext';
 function TodoList() {
   const { todos } = useContext(TodoContext);
 
-  console.log('Todos: ', todos);
   return (
     <ul>
       {todos.map(todo => (
