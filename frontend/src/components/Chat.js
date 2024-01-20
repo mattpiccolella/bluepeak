@@ -10,6 +10,8 @@ function Chat() {
         const response = await axios.get(`${serverUrl}/ai/data`, { params: {prompt: input } });
         setResponses([...responses, { prompt: input, response: response.data }]);
         setInput('');
+
+        await axios.post(`${serverUrl}/api/conversations`, { prompt: input, response: response.data });
     };
 
     return (
