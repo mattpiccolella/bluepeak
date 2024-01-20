@@ -6,7 +6,8 @@ function Chat() {
     const [responses, setResponses] = useState([]);
 
     const sendPrompt = async () => {
-        const response = await axios.get('http://127.0.0.1:5000/ai/data', { params: {prompt: input } });
+        const serverUrl = process.env.REACT_APP_SERVER_URL;
+        const response = await axios.get(`${serverUrl}/ai/data`, { params: {prompt: input } });
         setResponses([...responses, { prompt: input, response: response.data }]);
         setInput('');
     };
