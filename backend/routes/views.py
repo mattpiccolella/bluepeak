@@ -3,7 +3,7 @@ from flask import jsonify
 
 @main.route('/')
 def home():
-    return jsonify({"message": "Hello, World!"})
+    return jsonify({"message": "Hello, World! Is deploying actually easy?"})
 
 @main.route('/login')
 def login():
