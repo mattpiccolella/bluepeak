@@ -9,20 +9,20 @@ import os
 import openai
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
-    app.config.from_object(config_class)
+    application = Flask(__name__)
+    application.config.from_object(config_class)
 
-    db.init_app(app)
+    db.init_app(application)
 
-    app.register_blueprint(main)
-    app.register_blueprint(api, url_prefix='/api')
-    app.register_blueprint(ai, url_prefix='/ai')
+    application.register_blueprint(main)
+    application.register_blueprint(api, url_prefix='/api')
+    application.register_blueprint(ai, url_prefix='/ai')
 
     # Enable CORS for running on different ports
-    CORS(app)
+    CORS(application)
 
-    return app
+    return application
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+    application = create_app()
+    application.run(debug=True)
