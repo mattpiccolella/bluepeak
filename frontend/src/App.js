@@ -19,7 +19,7 @@ function App() {
         <TodoProvider>
           <Router>
             <Nav />
-            <h1>Polywise</h1>
+            <h1>Polywise App</h1>
             <Routes>
               <Route exact path="/" element={<TodoList />}/>
               <Route exact path="/chat" element={<Chat />}/>
