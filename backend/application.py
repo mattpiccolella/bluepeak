@@ -5,6 +5,7 @@ from routes import main
 from routes.api import api
 from routes.ai import ai
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from models import Conversation
 import os
 import openai
@@ -24,6 +25,8 @@ def create_app(config_class=Config):
 
     # Enable CORS for running on different ports
     CORS(application)
+
+    jwt = JWTManager(application)
 
     return application
 

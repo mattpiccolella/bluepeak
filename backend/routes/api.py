@@ -1,6 +1,6 @@
 from crypt import methods
 from flask import Blueprint, jsonify, request
-from models import Conversation
+from models import Conversation, User
 from extensions import db
 
 api = Blueprint('api', __name__)
@@ -32,3 +32,18 @@ def get_conversation_by_id(item_id):
         return jsonify({"message": "Conversation not found!"}), 404
 
     return jsonify({"conversation": conversation.serialize()})
+
+@api.route('/users/<int:user_id>', methods=['GET'])
+def get_user_by_id(user_id):
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return jsonify({"message": "User not found!"}), 404
+
+    return jsonify({"user": user.serialize()})
+
+@api.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+
+    return jsonify({"users": [user.serialize() for user in users]})
