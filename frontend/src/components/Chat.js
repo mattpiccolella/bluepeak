@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 
 function Chat() {
     const [input, setInput] = useState('');
     const [responses, setResponses] = useState([]);
 
     const sendPrompt = async () => {
-        const serverUrl = process.env.REACT_APP_SERVER_URL;
-        const response = await axios.get(`${serverUrl}/ai/data`, { params: {prompt: input } });
+        const response = await fetchNoAuth(`/ai/data`, { params: {prompt: input } });
         setResponses([...responses, { prompt: input, response: response.data }]);
         setInput('');
 
-        await axios.post(`${serverUrl}/api/conversations`, { prompt: input, response: response.data });
+        await fetchNoAuth(`/api/conversations`, { method: 'POST', data: {prompt: input, response: response.data.response }});
     };
 
     return (

@@ -11,8 +11,9 @@ def add_conversation():
     request_data = request.get_json()
 
     prompt = request_data.get('prompt')
+    response = request_data.get('response')
 
-    new_conversation = Conversation(prompt=prompt)
+    new_conversation = Conversation(prompt=prompt, response=response)
 
     db.session.add(new_conversation)
     db.session.commit()

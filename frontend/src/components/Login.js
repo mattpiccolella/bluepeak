@@ -17,10 +17,8 @@ function Login() {
             const response = await axios.post(`${serverUrl}/login`, { 'email': email, password });
             login(response.data.access_token);
             navigate('/user-profile')
-            // Handle login success (e.g., store token, redirect)
         } catch (error) {
             console.error('Login failed', error);
-            // Handle login failure
         }
     };
 

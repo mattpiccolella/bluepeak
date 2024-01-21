@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
+import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 
 function ChatHistory() {
     const [chats, setChats] = useState([]);
@@ -8,11 +9,8 @@ function ChatHistory() {
         // Define the async function that will fetch data
         const fetchChatHistory = async () => {
           try {
-            const serverUrl = process.env.REACT_APP_SERVER_URL;
-            console.log(serverUrl)
-            const response = await axios.get(`${serverUrl}/api/conversations`);
+            const response = await fetchNoAuth('/api/conversations');
             setChats(response.data.conversations);
-            console.log(chats)
           } catch (error) {
             console.error("Error fetching data: ", error);
           }

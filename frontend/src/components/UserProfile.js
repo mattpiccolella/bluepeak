@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 
 function UserProfile() {
     // Logic to fetch and display user profile data goes here
@@ -17,19 +18,10 @@ function UserProfile() {
             }
 
             try {
-                const serverUrl = process.env.REACT_APP_SERVER_URL;
-                const response = await axios.get(`${serverUrl}/api/users/profile`, {
-                    headers: {
-                        'Authorization': `Bearer ${getUserToken()}`
-                    }
-                });
-                console.log('Data fetched successfully', response.data);
-
-                setUserData(response.data)
-                // Handle your data
+                const response = await fetchWithAuth(`/api/users/profile`, getUserToken());
+                setUserData(response.data);
             } catch (error) {
-                console.error('Error fetching data', error);
-                // If the token is invalid or expired
+                console.error('Error fetching data', error); // invalid or expired token
                 navigate('/login');
             }
         };

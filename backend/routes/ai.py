@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from openai import OpenAI
-import pdb
 
 client = OpenAI()
 
@@ -9,7 +8,6 @@ ai = Blueprint('ai', __name__)
 @ai.route('/data', methods=['GET'])
 def get_data():
     prompt = request.args.get('prompt')
-
     # Retrieve conversation history from the database
     session_id = 12345
     history = get_conversation_history(session_id)
