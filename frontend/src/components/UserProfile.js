@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 
 function UserProfile() {
     // Logic to fetch and display user profile data goes here
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const { isLoggedIn, login, logout, getUserToken} = useContext(AuthContext);
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem('token');
-
-            if (!token) {
+            if (!isLoggedIn) {
                 navigate('/login');
                 return;
             }
@@ -20,7 +20,7 @@ function UserProfile() {
                 const serverUrl = process.env.REACT_APP_SERVER_URL;
                 const response = await axios.get(`${serverUrl}/api/users/profile`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${getUserToken()}`
                     }
                 });
                 console.log('Data fetched successfully', response.data);

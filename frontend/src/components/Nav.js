@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import AuthButton from './AuthButton'
 
 function Nav() {
   return (
@@ -8,7 +9,7 @@ function Nav() {
       <Link to="/chat">Chat</Link>
       <Link to="/chat-history" >Chat History</Link>
       <Link to="/add-todo">Add Todo</Link>
-      <Link to="/login">Login</Link>
+      <AuthButton />
       <Link to="/register">Register</Link>
       <Link to="/user-profile">User Profile</Link>
       {/* More navigation links as needed */}

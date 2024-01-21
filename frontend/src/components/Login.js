@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
 
+    const { isLoggedIn, login, logout, getUserToken } = useContext(AuthContext);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const serverUrl = process.env.REACT_APP_SERVER_URL;
             const response = await axios.post(`${serverUrl}/login`, { 'email': email, password });
-            console.log('Login successful', response.data);
-            localStorage.setItem('token', response.data.access_token); // Store the token in localStorage
+            login(response.data.access_token);
             navigate('/user-profile')
             // Handle login success (e.g., store token, redirect)
         } catch (error) {
