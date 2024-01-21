@@ -12,6 +12,7 @@ function AuthButton() {
 
     const handleLogout = () => {
         logout()
+        navigate('/')
     }
 
     return (
