@@ -2,6 +2,7 @@ from crypt import methods
 from flask import Blueprint, jsonify, request
 from models import Conversation, User
 from extensions import db
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 api = Blueprint('api', __name__)
 
@@ -47,3 +48,10 @@ def get_users():
     users = User.query.all()
 
     return jsonify({"users": [user.serialize() for user in users]})
+
+@api.route('/users/profile', methods=['GET'])
+@jwt_required()
+def user_profile():
+    current_user_id = get_jwt_identity()
+
+    return get_user_by_id(current_user_id)
