@@ -9,18 +9,18 @@ function Nav() {
     <nav>
     { isLoggedIn ? (
         <>
-            <Link to="/">Home</Link>
-            <Link to="/chat">Chat</Link>
-            <Link to="/chat-history" >Chat History</Link>
-            <Link to="/add-todo">Add Todo</Link>
-            <Link to="/user-profile">User Profile</Link>
+            <Link to="/"><button>Home</button></Link>
+            <Link to="/chat"><button>Chat</button></Link>
+            <Link to="/chat-history" ><button>Chat History</button></Link>
+            <Link to="/add-todo"><button>Add Todo</button></Link>
+            <Link to="/user-profile"><button>User Profile</button></Link>
             <AuthButton />
         </>
     ) : (
         <>
-            <Link to="/">Home</Link>
+            <Link to="/"><button>Home</button></Link>
             <AuthButton />
-            <Link to="/register">Register</Link>
+            <Link to="/register"><button>Register</button></Link>
         </>
     )
     }

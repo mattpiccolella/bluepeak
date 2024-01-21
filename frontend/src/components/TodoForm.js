@@ -8,7 +8,6 @@ function TodoForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (text) {
-        debugger;
         dispatch({ type: 'ADD_TODO', payload: text });
         setText('');
     }
