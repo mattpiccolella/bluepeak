@@ -10,8 +10,8 @@ function Nav() {
     { isLoggedIn ? (
         <>
             <Link to="/"><button>Home</button></Link>
-            <Link to="/chat"><button>Chat</button></Link>
             <Link to="/chat-history" ><button>Chat History</button></Link>
+            <Link to="/chat"><button>New Chat</button></Link>
             <Link to="/add-todo"><button>Add Todo</button></Link>
             <Link to="/user-profile"><button>User Profile</button></Link>
             <AuthButton />

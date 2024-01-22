@@ -1,17 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 
 function Chat() {
     const [input, setInput] = useState('');
-    const [responses, setResponses] = useState([]);
+    const [chatId, setChatId] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const { isLoggedIn, login, logout, getUserToken} = useContext(AuthContext);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        if (id) {
+            setChatId(id);
+        } else {
+            setChatId(null);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (!chatId) {
+            setMessages([]);
+        } else {
+            fetchChat(chatId)
+        }
+    }, [chatId]);
+
+    const fetchChat = async (chatId) => {
+        try {
+            const response = await fetchWithAuth(`/api/conversations/${chatId}`, getUserToken());
+            setChatId(response.data.conversation_id);
+            setMessages(response.data.messages);
+        } catch (error) {
+            console.error('Error fetching data', error); // invalid or expired token
+        }
+    }
     const sendPrompt = async () => {
-        const response = await fetchNoAuth(`/ai/data`, { params: {prompt: input } });
-        setResponses([...responses, { prompt: input, response: response.data }]);
+        setMessages([...messages, { content: input, role: 'user' }]);
         setInput('');
 
-        await fetchNoAuth(`/api/conversations`, { method: 'POST', data: {prompt: input, response: response.data.response }});
+        try {
+            if (!chatId) {
+                const response = await fetchWithAuth(`/api/conversations`, getUserToken(),  {method: 'POST', data: {prompt: input}});
+                navigate(`/chat/${response.data.conversation_id}`)
+            } else {
+                const response = await fetchWithAuth(`/api/conversations/${chatId}`, getUserToken(),  {method: 'POST', data: {prompt: input}});
+                fetchChat(chatId)
+            }
+        } catch (error) {
+            console.error('Error fetching data', error); // invalid or expired token
+        }
     };
 
     return (
@@ -24,8 +64,8 @@ function Chat() {
             />
             <button onClick={sendPrompt}>Send</button>
             <div>
-                {responses.map((res, index) => (
-                    <p key={index}><b>Prompt:</b> {res.prompt} <br /><b>Response:</b> {res.response.response}</p>
+                {messages.map((res, index) => (
+                    <p key={index}><b>{res.role}</b> {res.content} <br /></p>
                 ))}
             </div>
         </div>

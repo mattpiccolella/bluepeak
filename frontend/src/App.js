@@ -23,6 +23,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<TodoList />}/>
               <Route exact path="/chat" element={<Chat />}/>
+              <Route path="/chat/:id" element={<Chat />}/>
               <Route path="/add-todo" element={<TodoForm />}/>
               <Route path="/chat-history" element={<ChatHistory />}/>
               <Route path="/login" element={<Login />}/>
