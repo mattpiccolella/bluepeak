@@ -1,0 +1,9 @@
+alembic.local.ini
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+*~
+.DS_Store
+.env
