@@ -132,7 +132,17 @@ def user_profile():
 
     return get_user_by_id(current_user_id)
 
+@api.route('/file', methods=['GET'])
+@jwt_required()
+def get_files_for_user():
+    current_user_id = get_jwt_identity()
+
+    documents = Document.query.filter_by(user_id=current_user_id)
+
+    return jsonify([document.serialize() for document in documents])
+
 @api.route('/file/upload', methods=['POST'])
+@jwt_required()
 def upload_file():
     file = request.files['file']
 
@@ -142,7 +152,9 @@ def upload_file():
     s3_client = boto3.client('s3')
     s3_client.upload_fileobj(file, 'polywise-document-store', s3_file_name)
 
-    new_document = Document(file_name = file_name, content_type = file.content_type, file_size = file.content_length, s3_file_name = s3_file_name)
+    new_document = Document(file_name = file_name, content_type = file.content_type,
+                            file_size = file.content_length, s3_file_name = s3_file_name,
+                            user_id = get_jwt_identity())
 
     db.session.add(new_document)
     db.session.commit()

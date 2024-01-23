@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
+import { AuthContext } from '../contexts/AuthContext';
 
-function FileUpload() {
+function FileUpload({ onFetchFiles }) {
     const [file, setFile] = useState(null);
+    const { isLoggedIn, login, logout, getUserToken} = useContext(AuthContext);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -22,17 +24,24 @@ function FileUpload() {
         formData.append('file', file);
 
         try {
-            const response = await fetchNoAuth('/api/file/upload', {method: 'POST', data: formData});
+            const response = await fetchWithAuth('/api/file/upload', getUserToken(), {method: 'POST', data: formData});
             console.log('File uploaded successfully', response.data)
-            file = null;
+            setFile(null);
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput) {
+                fileInput.value = '';
+            }
+            onFetchFiles();
         } catch(error) {
             console.error('Error uploading file', error);
         }
+
+        setFile(null)
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="file" onChange={handleFileChange} />
+            <input type="file" id="fileInput" onChange={handleFileChange} />
             <button type="submit">Upload</button>
         </form>
     );

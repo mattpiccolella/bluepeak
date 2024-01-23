@@ -27,6 +27,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     conversations = db.relationship('Conversation', backref='user')
+    documents = db.relationship('Document', backref='user')
     # Add other fields here
 
     def set_password(self, password):
@@ -64,6 +65,7 @@ class Document(db.Model):
     content_type = db.Column(db.String(255))
     file_size = db.Column(db.Integer)
     s3_file_name = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def get_s3_file_url(self):
         S3_BUCKET = current_app.config['S3_DOCUMENT_STORE']

@@ -14,6 +14,7 @@ def create_app(config_class=Config):
     application = Flask(__name__)
     application.config.from_object(config_class)
 
+    CORS(application)
     db.init_app(application)
 
     application.register_blueprint(main)
@@ -22,9 +23,6 @@ def create_app(config_class=Config):
 
     with application.app_context():
         db.create_all()
-
-    # Enable CORS for running on different ports
-    CORS(application)
 
     jwt = JWTManager(application)
 
