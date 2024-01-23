@@ -7,3 +7,5 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///mydatabase.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    S3_DOCUMENT_STORE = os.environ.get('S3_DOCUMENT_STORE') or 'polywise-document-store'
+    S3_REGION = os.environ.get('S3_REGION') or 'us-west-1'

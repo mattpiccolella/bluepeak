@@ -1,6 +1,7 @@
 from extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
+from flask import current_app
 
 class Conversation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,4 +56,26 @@ class Message(db.Model):
             'id': self.id,
             'content': self.content,
             'role': self.role
+        }
+
+class Document(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    file_name = db.Column(db.String(255))
+    content_type = db.Column(db.String(255))
+    file_size = db.Column(db.Integer)
+    s3_file_name = db.Column(db.String(255))
+
+    def get_s3_file_url(self):
+        S3_BUCKET = current_app.config['S3_DOCUMENT_STORE']
+        S3_REGION = current_app.config['S3_REGION']
+        return f'https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{self.s3_file_name}'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'content_type': self.content_type,
+            'file_name': self.file_name,
+            'file_size': self.file_size,
+            's3_file_name': self.s3_file_name,
+            's3_file_url': self.get_s3_file_url()
         }

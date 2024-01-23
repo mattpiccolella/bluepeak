@@ -7,6 +7,7 @@ import ChatHistory from   './components/ChatHistory';
 import Login from   './components/Login';
 import Register from   './components/Register';
 import UserProfile from   './components/UserProfile';
+import FileManager from './components/FileManager';
 import { TodoProvider } from './contexts/TodoContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -29,6 +30,7 @@ function App() {
               <Route path="/login" element={<Login />}/>
               <Route path='/register' element={<Register />}/>
               <Route path="/user-profile" element={<UserProfile />}/>
+              <Route path="/documents" element={<FileManager />}/>
               {/* Add more routes as needed */}
             </Routes>
           </Router>

@@ -1,10 +1,11 @@
 from crypt import methods
 from flask import Blueprint, jsonify, request
-from models import Conversation, User, Message
+from models import Conversation, User, Message, Document
 from extensions import db
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from openai import OpenAI
-import pdb
+from werkzeug.utils import secure_filename
+import boto3, uuid
 
 client = OpenAI()
 api = Blueprint('api', __name__)
@@ -130,3 +131,25 @@ def user_profile():
     current_user_id = get_jwt_identity()
 
     return get_user_by_id(current_user_id)
+
+@api.route('/file/upload', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+
+    file_name = secure_filename(file.filename)
+    s3_file_name = generate_file_name(secure_filename(file.filename))
+
+    s3_client = boto3.client('s3')
+    s3_client.upload_fileobj(file, 'polywise-document-store', s3_file_name)
+
+    new_document = Document(file_name = file_name, content_type = file.content_type, file_size = file.content_length, s3_file_name = s3_file_name)
+
+    db.session.add(new_document)
+    db.session.commit()
+
+    return jsonify(new_document.serialize())
+
+def generate_file_name(original_filename):
+    extension = original_filename.split('.')[-1]
+    unique_filename = f"{uuid.uuid4()}.{extension}"
+    return unique_filename

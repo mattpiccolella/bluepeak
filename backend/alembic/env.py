@@ -4,7 +4,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 import os
 
-from models import Conversation
+from models import Document
 
 from alembic import context
 
@@ -23,7 +23,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Conversation.metadata
+target_metadata = Document.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
