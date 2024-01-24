@@ -21,9 +21,6 @@ def create_app(config_class=Config):
     application.register_blueprint(api, url_prefix='/api')
     application.register_blueprint(ai, url_prefix='/ai')
 
-    with application.app_context():
-        db.create_all()
-
     jwt = JWTManager(application)
 
     return application
