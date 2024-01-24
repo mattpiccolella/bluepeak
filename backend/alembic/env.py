@@ -4,7 +4,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 import os
 
-from models import Document
+from models import User, Conversation, Message, Document
 
 from alembic import context
 
