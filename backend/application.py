@@ -6,7 +6,7 @@ from routes.api import api
 from routes.ai import ai
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from models import Conversation
+from models import Conversation, User, Document, Message
 import os
 import openai
 
