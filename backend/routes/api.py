@@ -229,6 +229,19 @@ def upload_file():
 
     return jsonify(new_document.serialize())
 
+@api.route('/file/<int:file_id>', methods=['DELETE'])
+@jwt_required()
+def delete_file(file_id):
+    document = Document.query.get(file_id)
+
+    if document is None:
+        return jsonify({"message": "Document not found!"}), 404
+
+    db.session.delete(document)
+    db.session.commit()
+
+    return jsonify({"message": "Document deleted successfully!"})
+
 def generate_file_name(original_filename):
     extension = original_filename.split('.')[-1]
     unique_filename = f"{uuid.uuid4()}.{extension}"

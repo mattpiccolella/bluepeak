@@ -4,8 +4,8 @@ import datetime
 from flask import current_app
 
 conversation_document = db.Table('conversation_document',
-    db.Column('conversation_id', db.Integer, db.ForeignKey('conversation.id'), primary_key=True),
-    db.Column('document_id', db.Integer, db.ForeignKey('document.id'), primary_key=True)
+    db.Column('conversation_id', db.Integer, db.ForeignKey('conversation.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('document_id', db.Integer, db.ForeignKey('document.id', ondelete='CASCADE'), primary_key=True)
 )
 
 class Conversation(db.Model):
