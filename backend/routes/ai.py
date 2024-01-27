@@ -9,18 +9,24 @@ client = OpenAI()
 
 ai = Blueprint('ai', __name__)
 
-def read_files_from_s3(bucket_name, file_keys):
+def read_files_from_s3(bucket_name, documents):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(bucket_name)
 
-    documents = []
+    llama_documents = []
 
-    for file_key in file_keys:
-        obj = bucket.Object(file_key)
+    for document in documents:
+        obj = bucket.Object(document.s3_file_name)
         body = obj.get()['Body'].read()
-        documents.append(LlamaDocument(text=body.decode('utf-8')))
+        llama_document = LlamaDocument(
+            text=body.decode('utf-8'),
+            metadata={
+                'file_name': document.file_name
+            }
+        )
+        llama_documents.append(llama_document)
 
-    return documents
+    return llama_documents
 
 def load_data_into_index(documents):
     index = VectorStoreIndex.from_documents(documents)
@@ -31,7 +37,7 @@ def load_data_into_index(documents):
 def get_index_for_conversation(conversation):
     # TODO: include saving of the index
     documents = conversation.documents
-    s3_documents = read_files_from_s3(current_app.config['S3_DOCUMENT_STORE'], [document.s3_file_name for document in documents])
+    s3_documents = read_files_from_s3(current_app.config['S3_DOCUMENT_STORE'], documents)
     index = load_data_into_index(s3_documents)
     return index
 

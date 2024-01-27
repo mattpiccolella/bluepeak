@@ -16,6 +16,15 @@ function FileManager() {
         }
     }
 
+    const deleteFile = async (fileId) => {
+        try {
+            const response = await fetchWithAuth(`/api/file/${fileId}`, getUserToken(), { method: 'DELETE' });
+            fetchFiles();
+        } catch (error) {
+            console.error("Error deleting file: ", error);
+        }
+    }
+
     useEffect(() => {
         fetchFiles();
     }, []);
@@ -26,7 +35,10 @@ function FileManager() {
             <h3>Uploaded Files</h3>
             <ul>
                 {files.map(file => (
-                    <li key={file.id}>{file.file_name}</li> // Adjust according to your file object structure
+                    <li key={file.id}>
+                        {file.file_name}
+                        <button onClick={() => deleteFile(file.id)}>Delete</button>
+                    </li> // Adjust according to your file object structure
                 ))}
             </ul>
         </div>
