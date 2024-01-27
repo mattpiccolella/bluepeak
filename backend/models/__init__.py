@@ -19,9 +19,12 @@ class Conversation(db.Model):
     documents = db.relationship('Document', secondary=conversation_document, lazy='subquery',
                                 backref=db.backref('conversations', lazy=True))
 
+    title = db.Column(db.String(255))
+
     def serialize(self):
         # Convert the object's state to a serializable dictionary
         return {
+            'title': self.title,
             'conversation_id': self.id,
             'user_id': self.user_id,
             'created_at': self.created_at,

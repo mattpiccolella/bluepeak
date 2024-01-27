@@ -154,6 +154,23 @@ def update_documents_on_conversation(conversation_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@api.route('/conversations/<int:conversation_id>/title', methods=['PUT'])
+@jwt_required()
+def update_conversation_title(conversation_id):
+    data = request.json
+    new_title = data.get('title', '')
+
+    try:
+        conversation = Conversation.query.get(conversation_id)
+        conversation.title = new_title
+
+        db.session.commit()
+
+        return jsonify({'message': 'Conversation title updated successfully'}), 200
+    except:
+        db.session.rollback()
+        return jsonify({'error': 'Something went wrong'}), 500
+
 @api.route('/conversations', methods=['GET'])
 @jwt_required()
 def get_conversations():
