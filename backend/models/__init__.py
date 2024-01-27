@@ -3,6 +3,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from flask import current_app
 
+conversation_document = db.Table('conversation_document',
+    db.Column('conversation_id', db.Integer, db.ForeignKey('conversation.id'), primary_key=True),
+    db.Column('document_id', db.Integer, db.ForeignKey('document.id'), primary_key=True)
+)
+
 class Conversation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Add other fields here
@@ -11,6 +16,9 @@ class Conversation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     last_updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
+    documents = db.relationship('Document', secondary=conversation_document, lazy='subquery',
+                                backref=db.backref('conversations', lazy=True))
+
     def serialize(self):
         # Convert the object's state to a serializable dictionary
         return {
@@ -18,7 +26,8 @@ class Conversation(db.Model):
             'user_id': self.user_id,
             'created_at': self.created_at,
             'last_updated_at': self.last_updated_at,
-            'messages': [message.serialize() for message in self.messages]
+            'messages': [message.serialize() for message in self.messages],
+            'documents': [document.serialize() for document in self.documents]
         }
 
 class User(db.Model):

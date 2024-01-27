@@ -54,6 +54,13 @@ def add_conversation():
     for message in messages:
         new_conversation.messages.append(message)
 
+    document_ids = request_data.get('document_ids', [])
+
+    for doc_id in document_ids:
+        document = Document.query.get(doc_id)
+        if document:
+            new_conversation.documents.append(document)
+
     db.session.add(new_conversation)
     db.session.commit()
 
@@ -85,6 +92,39 @@ def add_message_to_conversation(conversation_id):
     db.session.commit()
 
     return jsonify(conversation.serialize())
+
+@api.route('/conversations/<int:conversation_id>/documents', methods=['PUT'])
+@jwt_required()
+def update_documents_on_conversation(conversation_id):
+    # Get the list of document IDs from the request
+    # Expecting the data in the format: {"document_ids": [1, 2, 3]}
+    data = request.json
+    document_ids = data.get('document_ids', [])
+
+    try:
+        # Find the conversation
+        conversation = Conversation.query.get(conversation_id)
+        if not conversation:
+            return jsonify({'error': 'Conversation not found'}), 404
+
+        # Update the documents associated with the conversation
+        # Clear the existing associations
+        conversation.documents.clear()
+
+        # Add the new associations
+        for doc_id in document_ids:
+            document = Document.query.get(doc_id)
+            if document:
+                conversation.documents.append(document)
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        return jsonify({'message': 'Documents updated successfully'}), 200
+
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 @api.route('/conversations', methods=['GET'])
 @jwt_required()
