@@ -3,6 +3,7 @@ import axios from 'axios';
 import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 import { AuthContext } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import '../assets/styles/CardStyle.css';
 
 function ChatHistory() {
@@ -31,7 +32,7 @@ function ChatHistory() {
             <div key={chat.conversation_id} className="message">
               <div className="message-content">
                 <h2>{chat.title ? chat.title : chat.messages[0].content}</h2>
-                <p className='date'>{chat.last_updated_at}</p>
+                <p className='date'>{format(chat.last_updated_at, 'MMMM do, yyyy h:mm a')}</p>
               </div>
             </div>
           </Link>

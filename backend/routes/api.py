@@ -176,7 +176,7 @@ def update_conversation_title(conversation_id):
 def get_conversations():
     current_user_id = get_jwt_identity()
 
-    conversations = Conversation.query.filter_by(user_id=current_user_id).all()
+    conversations = Conversation.query.filter_by(user_id=current_user_id).order_by(Conversation.last_updated_at.desc()).all()
 
     return jsonify([conversation.serialize() for conversation in conversations])
 
