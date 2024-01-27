@@ -4,16 +4,22 @@ import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { FileList } from './FilePicker';
+import EditableTitle from './EditableTitle';
 
 function Chat() {
     // File management
     const [availableFiles, setAvailableFiles] = useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
 
+    // Wait until you have everything
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     // Chat management
     const [input, setInput] = useState('');
     const [chatId, setChatId] = useState(null);
     const [messages, setMessages] = useState([]);
+    const [title, setTitle] = useState('');
     const { isLoggedIn, login, logout, getUserToken} = useContext(AuthContext);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -30,8 +36,12 @@ function Chat() {
         if (!chatId) {
             setMessages([]);
             setSelectedFiles([]);
+            setTitle('');
+            setIsLoading(false);
         } else {
             fetchChat(chatId);
+            debugger;
+            setIsLoading(false);
         }
     }, [chatId]);
 
@@ -76,6 +86,7 @@ function Chat() {
             setChatId(response.data.conversation_id);
             setMessages(response.data.messages);
             setSelectedFiles(response.data.documents.map(file => file.id))
+            setTitle(response.data.title && response.data.title !== '' ? response.data.title : response.data.messages[0].content);
         } catch (error) {
             console.error('Error fetching data', error); // invalid or expired token
         }
@@ -98,8 +109,26 @@ function Chat() {
         }
     };
 
+    const saveTitle = async (title) => {
+        try {
+            const response = await fetchWithAuth(`/api/conversations/${chatId}/title`, getUserToken(),  {method: 'PUT', data: {title: title}});
+            setTitle(title);
+        } catch (error) {
+            console.error('Error fetching data', error); // invalid or expired token
+        }
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+      }
+    
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
     return (
         <div>
+            <EditableTitle initialTitle={title} onSave={saveTitle} />
             <FileList
                 files={availableFiles}
                 selectedFiles={selectedFiles}
