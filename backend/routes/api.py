@@ -4,11 +4,46 @@ from models import Conversation, User, Message, Document
 from extensions import db
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from openai import OpenAI
+from .ai import get_index_for_conversation, query_index
 from werkzeug.utils import secure_filename
-import boto3, uuid
+import boto3, uuid, pdb
 
 client = OpenAI()
 api = Blueprint('api', __name__)
+
+def route_ai_response_for_conversation(conversation, prompt):
+    history = get_history_for_conversation(conversation)
+
+    if len(conversation.documents) == 0:
+        return get_ai_message(prompt, history)
+    else:
+        index = get_index_for_conversation(conversation)
+        return get_index_message(index, prompt, history)
+
+def get_index_message(index, prompt, history):
+    messages = []
+
+    user_message = Message(content=prompt, role='user')
+
+    history.append({'role': 'user', 'content': prompt})
+    messages.append(user_message)
+
+    response = query_index(index, prompt)
+
+    ai_message = Message(content=response.response, role='assistant - index')
+
+    messages.append(ai_message)
+    return messages
+
+def get_history_for_conversation(conversation):
+    history = [{
+                "role": "system",
+                "content": "you are a helpful assistant"
+    }]
+    ELIGIBLE_ROLES = ('user', 'assistant', 'system', 'function')
+    for message in conversation.messages:
+        history.append({'content': message.content, 'role': message.role if message.role in ELIGIBLE_ROLES else 'assistant'})
+    return history
 
 def get_ai_message(prompt, history):
     messages = []
@@ -44,22 +79,18 @@ def add_conversation():
     prompt = request_data.get('prompt')
     current_user_id = get_jwt_identity()
 
+    # First, create a new conversation with documents
     new_conversation = Conversation(user_id=current_user_id)
-
-    messages = get_ai_message(prompt, [{
-                "role": "system",
-                "content": "you are a helpful assistant"
-            }])
-
-    for message in messages:
-        new_conversation.messages.append(message)
-
     document_ids = request_data.get('document_ids', [])
-
     for doc_id in document_ids:
         document = Document.query.get(doc_id)
         if document:
             new_conversation.documents.append(document)
+
+    messages = route_ai_response_for_conversation(new_conversation, prompt)
+
+    for message in messages:
+        new_conversation.messages.append(message)
 
     db.session.add(new_conversation)
     db.session.commit()
@@ -82,13 +113,10 @@ def add_message_to_conversation(conversation_id):
     if current_user_id != conversation.user_id:
         return jsonify({"message": "You are not authorized to add messages to this conversation!"}), 401
 
-    history = [{'content': message.content, 'role': message.role} for message in conversation.messages]
-
-    messages = get_ai_message(prompt, history)
+    messages = route_ai_response_for_conversation(conversation, prompt)
 
     for message in messages:
         conversation.messages.append(message)
-
     db.session.commit()
 
     return jsonify(conversation.serialize())
