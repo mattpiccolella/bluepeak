@@ -16,7 +16,6 @@ function App() {
       <AuthProvider>
         <Router>
           <Nav />
-          <h1>Polywise App</h1>
           <Routes>
             <Route exact path="/" element={<ChatHistory />}/>
             <Route exact path="/chat" element={<Chat />}/>
