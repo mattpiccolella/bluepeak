@@ -3,7 +3,7 @@ from openai import OpenAI
 from llama_index import VectorStoreIndex, SimpleDirectoryReader
 from models import Conversation, User, Message, Document
 from llama_index import Document as LlamaDocument
-import boto3, pdb
+import boto3, pdb, fitz
 
 client = OpenAI()
 
@@ -18,8 +18,14 @@ def read_files_from_s3(bucket_name, documents):
     for document in documents:
         obj = bucket.Object(document.s3_file_name)
         body = obj.get()['Body'].read()
+
+        if document.s3_file_name.lower().endswith('.pdf'):
+            text = get_pdf_text(body)
+        else:
+            text = body.decode('utf-8')
+
         llama_document = LlamaDocument(
-            text=body.decode('utf-8'),
+            text=text,
             metadata={
                 'file_name': document.file_name
             }
@@ -27,6 +33,15 @@ def read_files_from_s3(bucket_name, documents):
         llama_documents.append(llama_document)
 
     return llama_documents
+
+def get_pdf_text(pdf):
+    # Open the PDF file
+    with fitz.open(stream=pdf, filetype="pdf") as doc:
+        text = ""
+        # Iterate over each page
+        for page in doc:
+            text += page.get_text()
+    return text
 
 def load_data_into_index(documents):
     index = VectorStoreIndex.from_documents(documents)
