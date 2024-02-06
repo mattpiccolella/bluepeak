@@ -15,7 +15,7 @@ function App() {
     <div class="container">
       <AuthProvider>
         <Router>
-          <Nav />
+          <Nav className="bg-blue-500 text-white p-4"/>
           <Routes>
             <Route exact path="/" element={<ChatHistory />}/>
             <Route exact path="/chat" element={<Chat />}/>

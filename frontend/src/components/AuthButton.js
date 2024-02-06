@@ -16,7 +16,7 @@ function AuthButton() {
     }
 
     return (
-        <button onClick={isLoggedIn ? handleLogout : handleLogin }>
+        <button className="text-white" onClick={isLoggedIn ? handleLogout : handleLogin }>
             {isLoggedIn ? 'Sign Out' : 'Log In'}
         </button>
     );

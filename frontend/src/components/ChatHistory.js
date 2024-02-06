@@ -32,7 +32,7 @@ function ChatHistory() {
             <div key={chat.conversation_id} className="message">
               <div className="message-content">
                 <h2>{chat.title ? chat.title : chat.messages[0].content}</h2>
-                <p className='date'>{format(chat.last_updated_at, 'MMMM do, yyyy h:mm a')}</p>
+                <p className='date text-green'>{format(chat.last_updated_at, 'MMMM do, yyyy h:mm a')}</p>
               </div>
             </div>
           </Link>
