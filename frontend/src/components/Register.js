@@ -27,7 +27,7 @@ function Register() {
     };
 
     return (
-        <div>
+        <div className="pt-16">
             <h2>Register</h2>
             <form onSubmit={onSubmit}>
                 <div>

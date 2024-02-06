@@ -30,14 +30,13 @@ function FileManager() {
     }, []);
 
     return (
-        <div>
+        <div className="pt-16">
             <FileUpload onFetchFiles={fetchFiles} />
-            <h3>Uploaded Files</h3>
-            <ul>
+            <ul class='file-list'>
                 {files.map(file => (
                     <li key={file.id}>
-                        {file.file_name}
-                        <button onClick={() => deleteFile(file.id)}>Delete</button>
+                        <p class='file-name'>{file.file_name}</p>
+                        <button class='delete-btn' onClick={() => deleteFile(file.id)}>Delete</button>
                     </li> // Adjust according to your file object structure
                 ))}
             </ul>

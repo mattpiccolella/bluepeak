@@ -11,53 +11,145 @@ body {
   overflow: hidden;
 }
 
-header {
-  background: #333;
-  color: white;
-  padding-top: 30px;
-  min-height: 70px;
-  border-bottom: #bbb 1px solid;
-}
-
-header a {
-  color: #fff;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 16px;
-}
-
-header ul {
-  padding: 0;
-  margin: 0;
+.file-list {
   list-style: none;
-  overflow: hidden;
+  padding: 0;
+  margin: 20px 0;
 }
 
-header li {
-  float: left;
-  display: inline;
-  padding: 0 20px 0 20px;
+.file-list li {
+  background-color: #ffffff;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-header #branding {
-  float: left;
+.file-name {
+  font-weight: bold;
 }
 
-header #branding h1 {
-  margin: 0;
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-header nav {
-  float: right;
+.delete-btn:hover {
+  background-color: #ff3333;
+}
+
+.file-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  width: 100%;
+}
+
+.file-input-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.file-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed #ddd;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.file-input:hover {
+  border-color: #007bff;
+}
+
+.upload-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #218838;
+}
+
+/* Additional styles for visual feedback */
+.file-uploader.dragover .file-input {
+  border-color: #007bff;
+  background-color: #e7f5ff;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 10px;
   margin-top: 10px;
+  border-radius: 4px;
+  border: 2px solid #ddd;
+  font-family: inherit;
 }
 
-header .highlight, header .current a {
-  color: #e8491d;
-  font-weight: bold;
+.send-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-header a:hover {
-  color: #ffffff;
-  font-weight: bold;
+.chat-message {
+  background-color: #ffffff;
+  padding: 10px 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat Layout Styles */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Use the full height of the viewport */
+}
+
+.messages-container {
+  flex-grow: 1; /* Allows this container to expand to fill the space */
+  overflow-y: auto; /* Adds scroll to the messages container */
+  margin-bottom: 80px; /* Give some space at the bottom for the input */
+}
+
+/* Fixed footer with input and send button */
+.chat-footer {
+  position: fixed;
+  bottom: 0;
+  width: 80%;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -99,22 +99,28 @@ function Chat() {
     };
 
     return (
-        <div>
+        <div class='chat-container pt-16'>
             <FileList
                 files={availableFiles}
                 selectedFiles={selectedFiles}
                 onFileSelect={updateSelectedFiles} />
-            <input 
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendPrompt()}
-            />
-            <button onClick={sendPrompt}>Send</button>
-            <div>
+            <div class='messages-container'>
                 {messages.map((res, index) => (
-                    <p key={index}><b>{res.role}</b> {res.content} <br /></p>
+                    <div class='chat-message'>
+                        <p><b>{res.role}</b></p>
+                        <p>{res.content}</p>
+                    </div>
                 ))}
+            </div>
+            <div class='chat-footer'>
+                <input 
+                    type="text"
+                    value={input}
+                    class='chat-input'
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && sendPrompt()}
+                />
+                <button class='send-button' onClick={sendPrompt}>Send</button>
             </div>
         </div>
     );

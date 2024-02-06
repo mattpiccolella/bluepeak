@@ -29,7 +29,7 @@ function UserProfile() {
         fetchData();
     }, [navigate]);
     return (
-        <div>
+        <div className="pt-16">
             <h2>User Profile</h2>
             {userData ? (
                 <div>
