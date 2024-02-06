@@ -16,9 +16,9 @@ function AuthButton() {
     }
 
     return (
-        <button onClick={isLoggedIn ? handleLogout : handleLogin }>
+        <a className="py-5 px-3 hover:underline" onClick={isLoggedIn ? handleLogout : handleLogin }>
             {isLoggedIn ? 'Sign Out' : 'Log In'}
-        </button>
+        </a>
     );
 };
 

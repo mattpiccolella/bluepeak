@@ -26,7 +26,7 @@ function ChatHistory() {
 
 
     return (
-      <div className="chat-container">
+      <div className="chat-container pt-16">
         {chats.map((chat) => (
           <Link to={`/chat/${chat.conversation_id}`} key={chat.id} style={{ textDecoration: 'none', color: 'inherit' }}>
             <div key={chat.conversation_id} className="message">

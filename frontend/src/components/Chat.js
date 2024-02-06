@@ -99,7 +99,7 @@ function Chat() {
     };
 
     return (
-        <div class='chat-container'>
+        <div class='chat-container pt-16'>
             <FileList
                 files={availableFiles}
                 selectedFiles={selectedFiles}

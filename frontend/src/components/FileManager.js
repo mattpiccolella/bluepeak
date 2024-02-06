@@ -30,7 +30,7 @@ function FileManager() {
     }, []);
 
     return (
-        <div >
+        <div className="pt-16">
             <FileUpload onFetchFiles={fetchFiles} />
             <ul class='file-list'>
                 {files.map(file => (
