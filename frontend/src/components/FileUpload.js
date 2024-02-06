@@ -40,10 +40,12 @@ function FileUpload({ onFetchFiles }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="file" id="fileInput" onChange={handleFileChange} />
-            <button type="submit">Upload</button>
-        </form>
+        <div class='file-uploader'>
+            <form onSubmit={handleSubmit}>
+                <input class='file-input' type="file" id="fileInput" onChange={handleFileChange} />
+                <button class='upload-btn' type="submit">Upload</button>
+            </form>
+        </div>
     );
 }
 
