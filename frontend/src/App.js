@@ -12,23 +12,23 @@ import './assets/styles/App.css';
 
 function App() {
   return (
-    <div class="container">
-      <AuthProvider>
-        <Router>
-          <Nav />
-          <Routes>
-            <Route exact path="/" element={<ChatHistory />}/>
-            <Route exact path="/chat" element={<Chat />}/>
-            <Route path="/chat/:id" element={<Chat />}/>
-            <Route path="/login" element={<Login />}/>
-            <Route path='/register' element={<Register />}/>
-            <Route path="/user-profile" element={<UserProfile />}/>
-            <Route path="/documents" element={<FileManager />}/>
-            {/* Add more routes as needed */}
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </div>
+      <div class="flex flex-col h-screen">
+        <AuthProvider>
+          <Router>
+            <Nav />
+            <Routes>
+              <Route exact path="/" element={<ChatHistory />}/>
+              <Route exact path="/chat" element={<Chat />}/>
+              <Route path="/chat/:id" element={<Chat />}/>
+              <Route path="/login" element={<Login />}/>
+              <Route path='/register' element={<Register />}/>
+              <Route path="/user-profile" element={<UserProfile />}/>
+              <Route path="/documents" element={<FileManager />}/>
+              {/* Add more routes as needed */}
+            </Routes>
+          </Router>
+          </AuthProvider>
+        </div>
   );
 }
 

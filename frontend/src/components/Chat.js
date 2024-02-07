@@ -99,28 +99,34 @@ function Chat() {
     };
 
     return (
-        <div class='chat-container pt-16'>
-            <FileList
-                files={availableFiles}
-                selectedFiles={selectedFiles}
-                onFileSelect={updateSelectedFiles} />
-            <div class='messages-container'>
-                {messages.map((res, index) => (
-                    <div class='chat-message'>
-                        <p><b>{res.role}</b></p>
-                        <p>{res.content}</p>
+        <div class='flex flex-1 overflow-hidden'>
+            <aside className="bg-gray-400 w-64 p-4 overflow-auto">
+                <FileList
+                    files={availableFiles}
+                    selectedFiles={selectedFiles}
+                    onFileSelect={updateSelectedFiles} />
+            </aside>
+            <div className="flex flex-1 flex-col">
+                <main className='flex-1 p-4 overflow-auto'>
+                    {messages.map((res, index) => (
+                        <div className='rounded overflow-hidden shadow-lg bg-white p-4 m-4'>
+                            <p><b>{res.role}</b></p>
+                            <p>{res.content}</p>
+                        </div>
+                    ))}
+                </main>
+                <div className='mt-auto bg-gray-200 p-4'>
+                    <div class='flex items-center space-x-2'>
+                        <input
+                            type="text"
+                            value={input}
+                            className='flex-1 border-gray-300 border-2 rounded-l p-2'
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendPrompt()}
+                        />
+                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r' onClick={sendPrompt}>Send</button>
                     </div>
-                ))}
-            </div>
-            <div class='chat-footer'>
-                <input 
-                    type="text"
-                    value={input}
-                    class='chat-input'
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendPrompt()}
-                />
-                <button class='send-button' onClick={sendPrompt}>Send</button>
+                </div>
             </div>
         </div>
     );
