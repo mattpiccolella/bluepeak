@@ -37,6 +37,7 @@ function ChatHistory() {
             </div>
           </Link>
         ))}
+        <button class='new-chat-btn'><Link to='/chat'>New Chat</Link></button>
       </div>
     );
 }
