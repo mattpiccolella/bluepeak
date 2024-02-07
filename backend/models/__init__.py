@@ -2,11 +2,23 @@ from extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from flask import current_app
+import boto3
 
 conversation_document = db.Table('conversation_document',
     db.Column('conversation_id', db.Integer, db.ForeignKey('conversation.id', ondelete='CASCADE'), primary_key=True),
     db.Column('document_id', db.Integer, db.ForeignKey('document.id', ondelete='CASCADE'), primary_key=True)
 )
+
+def get_presigned_url(file_name):
+    s3_client = boto3.client('s3')
+    S3_BUCKET = current_app.config['S3_DOCUMENT_STORE']
+    S3_REGION = current_app.config['S3_REGION']
+    url = s3_client.generate_presigned_url('get_object',
+                                          Params={'Bucket': S3_BUCKET,
+                                                  'Key': file_name},
+                                          ExpiresIn=3600)
+    return url
+
 
 class Conversation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,6 +48,8 @@ class Conversation(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    name = db.Column(db.String(120))
+    profile_picture_s3_link = db.Column(db.String(255))
     password_hash = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     conversations = db.relationship('Conversation', backref='user')
@@ -52,8 +66,10 @@ class User(db.Model):
         # Convert the object's state to a serializable dictionary
         return {
             'id': self.id,
+            'name': self.name,
             'email': self.email,
-            'created_at': self.created_at
+            'created_at': self.created_at,
+            'profile_picture': get_presigned_url(self.profile_picture_s3_link)
         }
 
 class Message(db.Model):

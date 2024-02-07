@@ -217,6 +217,25 @@ def user_profile():
 
     return get_user_by_id(current_user_id)
 
+@api.route('/users/profile_picture', methods=['POST'])
+@jwt_required()
+def user_profile_picture():
+    current_user_id = get_jwt_identity()
+
+    file = request.files['file']
+
+    file_name = secure_filename(file.filename)
+    s3_file_name = generate_file_name(secure_filename(file.filename))
+
+    s3_client = boto3.client('s3')
+    s3_client.upload_fileobj(file, 'polywise-document-store', s3_file_name)
+
+    user = User.query.get(current_user_id)
+    user.profile_picture_s3_link = s3_file_name
+    db.session.commit()
+
+    return jsonify({"user": user.serialize()})
+
 @api.route('/file', methods=['GET'])
 @jwt_required()
 def get_files_for_user():
