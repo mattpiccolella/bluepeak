@@ -40,10 +40,20 @@ function FileUpload({ onFetchFiles }) {
     };
 
     return (
-        <div class='file-uploader'>
-            <form onSubmit={handleSubmit}>
-                <input class='file-input' type="file" id="fileInput" onChange={handleFileChange} />
-                <button class='upload-btn' type="submit">Upload</button>
+        <div class='flex justify-center items-center my-7'>
+            <form onSubmit={handleSubmit} className='flex items-center'>
+                <input 
+                    type="file"
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-blue-50 file:text-blue-700
+                                hover:file:bg-blue-100"
+                    id="fileInput"
+                    onChange={handleFileChange} />
+                <button class='bg-blue-400 hover:bg-blue-600 text-white text-sm py-1 px-2 rounded' type="submit">Upload</button>
             </form>
         </div>
     );

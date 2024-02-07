@@ -8,7 +8,6 @@ import UserProfile from   './components/UserProfile';
 import FileManager from './components/FileManager';
 import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './assets/styles/App.css';
 
 function App() {
   return (

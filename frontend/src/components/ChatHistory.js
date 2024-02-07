@@ -4,7 +4,6 @@ import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 import { AuthContext } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import '../assets/styles/CardStyle.css';
 
 function ChatHistory() {
     const [chats, setChats] = useState([]);

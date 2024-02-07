@@ -30,16 +30,16 @@ function FileManager() {
     }, []);
 
     return (
-        <div className="pt-16">
+        <div className='mx-7'>
             <FileUpload onFetchFiles={fetchFiles} />
-            <ul class='file-list'>
+            <div className="grid grid-cols-4 gap-4">
                 {files.map(file => (
-                    <li key={file.id}>
-                        <p class='file-name'>{file.file_name}</p>
-                        <button class='delete-btn' onClick={() => deleteFile(file.id)}>Delete</button>
-                    </li> // Adjust according to your file object structure
+                    <div key={file.id} className="border rounded p-4 flex flex-col justify-center items-center">
+                        <p className="text-xl font-medium">{file.file_name}</p>
+                        <button class='bg-red-400 hover:bg-red-600 text-white mt-4 text-sm py-1 px-2 rounded' onClick={() => deleteFile(file.id)}>Delete</button>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }
