@@ -42,20 +42,21 @@ function UserProfile() {
     }
     return (
         <>
-        <div className="bg-white shadow-md rounded-lg overflow-hidden pt-16">
-            <div className="p-4 flex">
-                {userData ? (
-                    <>
-                        <ImageSelector imageUrl={userData.user.profile_picture} updateImage={handleImageChange} /> {/* Pass null if no initial image */}
-                        <div className="flex flex-col justify-center">
-                            <h2 className="text-lg font-semibold">{userData.user.name}</h2>
-                            <p className="text-gray-600 text-lg">{userData.user.email}</p>
-                            <p className="text-gray-600">{userData.user.bio}</p>
-                        </div>
-                    </>):
-                    (<><p>Loading data...</p></>)
-                }
-            </div>
+        <div class="container mx-auto mt-10">
+            <header>
+                <h1 class="text-3xl font-bold text-gray-800">Profile</h1>
+            </header>
+            { userData ? (
+                <>
+                    <div class="flex flex-col items-center">
+                            <ImageSelector imageUrl={userData.user.profile_picture} updateImage={handleImageChange} />
+                            <h2 class="mt-2 text-xl font-semibold text-gray-700">{userData.user.name ? userData.user.name : 'Username'}</h2>
+                            <p class="mt-1 text-gray-600">{userData.user.email}</p>
+                    </div>
+                </>)
+                :
+                (<p>Loading data...</p>)
+            }
         </div>
         </>
     );
