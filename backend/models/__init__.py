@@ -10,6 +10,9 @@ conversation_document = db.Table('conversation_document',
 )
 
 def get_presigned_url(file_name):
+    if file_name is None:
+        return None
+
     s3_client = boto3.client('s3')
     S3_BUCKET = current_app.config['S3_DOCUMENT_STORE']
     S3_REGION = current_app.config['S3_REGION']
