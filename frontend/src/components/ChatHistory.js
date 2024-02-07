@@ -26,19 +26,19 @@ function ChatHistory() {
 
 
     return (
-      <div class="container">
-        <div class="flex-1 overflow-auto">
-          {chats.map((chat) => (
-            <Link to={`/chat/${chat.conversation_id}`} key={chat.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div key={chat.conversation_id} className="message">
-                <div className="message-content">
-                  <h2>{chat.title ? chat.title : chat.messages[0].content}</h2>
-                  <p className='date'>{format(chat.last_updated_at, 'MMMM do, yyyy h:mm a')}</p>
-                </div>
+      <div class="flex-1 overflow-auto px-7">
+        {chats.map((chat) => (
+          <Link to={`/chat/${chat.conversation_id}`} key={chat.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div key={chat.conversation_id} className="bg-gray-100 my-3 p-2 border-l-4 border-blue-500">
+              <div className="ml-3">
+                <h2>{chat.title ? chat.title : chat.messages[0].content}</h2>
+                <p className='mt-1 text-gray-500 text-xs'>{format(chat.last_updated_at, 'MMMM do, yyyy h:mm a')}</p>
               </div>
-            </Link>
-          ))}
-          <button class='new-chat-btn'><Link to='/chat'>New Chat</Link></button>
+            </div>
+          </Link>
+        ))}
+        <div className="flex justify-center">
+          <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'><Link to='/chat'>New Chat</Link></button>
         </div>
       </div>
     );
