@@ -27,32 +27,48 @@ function Register() {
     };
 
     return (
-        <div className="pt-16">
-            <h2>Register</h2>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label>Email:</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        value={email} 
-                        onChange={onChange} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        value={password} 
-                        onChange={onChange} 
-                        required 
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-        </div>
+<div className="flex flex-1 justify-center bg-gray-100 pt-8">
+  <div className="w-full max-w-md">
+    <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Register</h2>
+    <form onSubmit={onSubmit} className="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          Email:
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={email}
+          onChange={onChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="email"
+        />
+      </div>
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+          Password:
+        </label>
+        <input
+          type="password"
+          name="password"
+          value={password}
+          onChange={onChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          id="password"
+        />
+      </div>
+      <div className="flex justify-center">
+        <button type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Register
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
     );
 }
 
