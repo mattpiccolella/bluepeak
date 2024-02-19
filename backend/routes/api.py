@@ -1,14 +1,15 @@
 from crypt import methods
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from models import Conversation, User, Message, Document
 from extensions import db
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from openai import OpenAI
-from .ai import get_index_for_conversation, query_index
+from .ai import get_index_for_conversation, query_index, upsert_embedding_to_pinecone
 from werkzeug.utils import secure_filename
 import boto3, uuid, pdb
 
 client = OpenAI()
+
 api = Blueprint('api', __name__)
 
 def route_ai_response_for_conversation(conversation, prompt):
@@ -249,12 +250,15 @@ def get_files_for_user():
 @jwt_required()
 def upload_file():
     file = request.files['file']
+    file_body = file.read()
 
     file_name = secure_filename(file.filename)
     s3_file_name = generate_file_name(secure_filename(file.filename))
 
     s3_client = boto3.client('s3')
     s3_client.upload_fileobj(file, 'polywise-document-store', s3_file_name)
+
+    embedding_id = upsert_embedding_to_pinecone(s3_file_name, file_body, current_app.index)
 
     new_document = Document(file_name = file_name, content_type = file.content_type,
                             file_size = file.content_length, s3_file_name = s3_file_name,

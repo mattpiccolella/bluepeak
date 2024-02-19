@@ -9,3 +9,5 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     S3_DOCUMENT_STORE = os.environ.get('S3_DOCUMENT_STORE') or 'polywise-document-store'
     S3_REGION = os.environ.get('S3_REGION') or 'us-west-1'
+    PINECONE_API_KEY = os.environ.get('PINECONE_API_KEY') or 'secretkey'
+    PINECONE_INDEX_NAME = os.environ.get('PINECONE_INDEX_NAME') or 'polywise-index'
