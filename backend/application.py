@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager
 from models import Conversation, User, Document, Message
 import os
 from pinecone import Pinecone, ServerlessSpec
+#from llama_index.readers.pinecone import PineconeReader
 
 def create_app(config_class=Config):
     application = Flask(__name__)
@@ -23,11 +24,16 @@ def create_app(config_class=Config):
 
     jwt = JWTManager(application)
 
-    pc = Pinecone(api_key=application.config['PINECONE_API_KEY'])
+    pinecone_api_key = application.config['PINECONE_API_KEY']
+
+    pc = Pinecone(api_key=pinecone_api_key)
     index_name = application.config['PINECONE_INDEX_NAME']
     index = pc.Index(index_name)
 
+    #pc_reader = PineconeReader(api_key=pinecone_api_key)
+
     application.index = index
+    #application.pc_reader = pc_reader
 
     return application
 

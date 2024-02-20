@@ -4,7 +4,6 @@ from llama_index import VectorStoreIndex, SimpleDirectoryReader
 from models import Conversation, User, Message, Document
 from llama_index import Document as LlamaDocument
 import boto3, pdb, fitz, uuid
-from pinecone import Pinecone, ServerlessSpec
 
 client = OpenAI()
 ai = Blueprint('ai', __name__)
@@ -84,3 +83,15 @@ def query_index(index, query):
     query_engine = index.as_query_engine(similar_top_k=5)
     response = query_engine.query(query)
     return response
+
+"""
+def query_index_from_pinecone(pc_reader, query, id_to_text_map):
+    vector_query = generate_embedding(query)
+
+    documents = pc_reader.load_data(
+        id_to_text_map=id_to_text_map,
+        top_k=3,
+        vector=vector_query.data[0].embedding,
+        separate_documents=True
+    )
+"""

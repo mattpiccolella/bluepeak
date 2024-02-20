@@ -47,6 +47,7 @@ numpy==1.26.3
 openai==1.8.0
 packaging==23.2
 pandas==2.2.0
+pinecone-client==3.0.3
 psycopg2-binary==2.9.9
 pydantic==2.5.3
 pydantic_core==2.14.6

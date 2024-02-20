@@ -262,7 +262,7 @@ def upload_file():
 
     new_document = Document(file_name = file_name, content_type = file.content_type,
                             file_size = file.content_length, s3_file_name = s3_file_name,
-                            user_id = get_jwt_identity())
+                            user_id = get_jwt_identity(), pinecone_index_id = embedding_id)
 
     db.session.add(new_document)
     db.session.commit()

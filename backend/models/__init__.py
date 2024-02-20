@@ -97,6 +97,7 @@ class Document(db.Model):
     file_size = db.Column(db.Integer)
     s3_file_name = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    pinecone_index_id = db.Column(db.String(255))
 
     def get_s3_file_url(self):
         S3_BUCKET = current_app.config['S3_DOCUMENT_STORE']
@@ -110,5 +111,6 @@ class Document(db.Model):
             'file_name': self.file_name,
             'file_size': self.file_size,
             's3_file_name': self.s3_file_name,
-            's3_file_url': self.get_s3_file_url()
+            's3_file_url': self.get_s3_file_url(),
+            'pinecone_index_id': self.pinecone_index_id
         }
