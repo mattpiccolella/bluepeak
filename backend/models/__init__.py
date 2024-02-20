@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from flask import current_app
 import boto3
+import markdown
 
 conversation_document = db.Table('conversation_document',
     db.Column('conversation_id', db.Integer, db.ForeignKey('conversation.id', ondelete='CASCADE'), primary_key=True),
@@ -86,7 +87,7 @@ class Message(db.Model):
         # Convert the object's state to a serializable dictionary
         return {
             'id': self.id,
-            'content': self.content,
+            'content': markdown.markdown(self.content),
             'role': self.role
         }
 

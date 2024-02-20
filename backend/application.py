@@ -9,7 +9,7 @@ from flask_jwt_extended import JWTManager
 from models import Conversation, User, Document, Message
 import os
 from pinecone import Pinecone, ServerlessSpec
-#from llama_index.readers.pinecone import PineconeReader
+from llama_index.vector_stores import PineconeVectorStore
 
 def create_app(config_class=Config):
     application = Flask(__name__)

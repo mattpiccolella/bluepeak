@@ -4,6 +4,7 @@ import { fetchNoAuth, fetchWithAuth } from '../utils/apiUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { FileList } from './FilePicker';
+import { sanitizeHtml } from 'sanitize-html-react';
 
 function Chat() {
     // File management
@@ -111,7 +112,7 @@ function Chat() {
                     {messages.map((res, index) => (
                         <div className='rounded overflow-hidden shadow-lg bg-white p-4 m-4'>
                             <p><b>{res.role}</b></p>
-                            <p>{res.content}</p>
+                            <div dangerouslySetInnerHTML={{ __html: res.content }}></div>
                         </div>
                     ))}
                 </main>

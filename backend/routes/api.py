@@ -7,6 +7,7 @@ from openai import OpenAI
 from .ai import get_index_for_conversation, query_index, upsert_embedding_to_pinecone
 from werkzeug.utils import secure_filename
 import boto3, uuid, pdb
+import markdown
 
 client = OpenAI()
 
